@@ -20,7 +20,7 @@
     //     "48": "icon46.png", //Used on the extension management page
     //     "128": "icon124.png" //Used during installation & in the Chrome Web Store
     // },
-    "content_security_policy": "script-src 'self' https://ajax.googleapis.com; object-src 'self'",
+    "content_security_policy": "script-src 'self' https://ajax.googleapis.com https://*.firebaseio.com https://*.gstatic.com/; object-src 'self'",
     
     // https://developer.chrome.com/extensions/background_pages
     // https://developer.chrome.com/extensions/event_pages

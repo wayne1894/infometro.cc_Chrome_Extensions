@@ -88,9 +88,78 @@ var GoogleBookmark = (function () {
     };
     return GoogleBookmark;
 }());
+var firebase;
+var UserInfo = (function () {
+    function UserInfo() {
+    }
+    return UserInfo;
+}());
+var FirebaseConfig = (function () {
+    function FirebaseConfig() {
+    }
+    return FirebaseConfig;
+}());
+var Firebase = (function () {
+    function Firebase() {
+        var config = new FirebaseConfig();
+        config.apiKey = "AIzaSyA-eyOoV5ZTrV5PTdIuXzYupLO--q_LlrM";
+        config.authDomain = "infometrotest.firebaseapp.com";
+        config.databaseURL = "https://infometrotest.firebaseio.com";
+        config.projectId = "infometrotest";
+        config.storageBucket = "infometrotest.appspot.com";
+        config.messagingSenderId = "877952539415";
+        firebase.initializeApp(config);
+        firebase.auth().onAuthStateChanged(this.onAuthStateChangedHandle);
+        this.database = firebase.database();
+    }
+    Firebase.prototype.onAuthStateChangedHandle = function (user) {
+        if (user) {
+            this.userLogin = user;
+            console.log("User is logined", user);
+        }
+        else {
+            this.userLogin = null;
+            console.log("User is not logined yet.");
+        }
+    };
+    Firebase.prototype.login = function (email, password) {
+        firebase.auth().signInWithEmailAndPassword(email, password)
+            .then(function (result) {
+            console.log("login :", result);
+        })["catch"](function (error) {
+            var errorCode = error.code;
+            var errorMsg = error.message;
+            console.log(errorMsg);
+        });
+    };
+    Firebase.prototype.regedit = function (email, password) {
+        firebase.auth().createUserWithEmailAndPassword(email, password)
+            .then(function (result) {
+            console.log("regedit :", result);
+        })["catch"](function (error) {
+            var errorCode = error.code;
+            var errorMsg = error.message;
+            console.log(errorMsg);
+        });
+    };
+    Firebase.prototype.logout = function () {
+        firebase.auth().signOut()
+            .then(function (result) {
+            console.log("logout :", result);
+        }, function (error) {
+            console.log("錯誤：", error);
+        });
+    };
+    Firebase.prototype.currentUser = function () {
+        var user = firebase.auth().currentUser;
+        return user;
+    };
+    return Firebase;
+}());
 $(function () {
     console.log("Background load ...");
     var googleBookmark = new GoogleBookmark();
     googleBookmark.main();
+    var db = new Firebase();
 });
 //# sourceMappingURL=background_script.js.map
